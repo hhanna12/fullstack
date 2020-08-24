@@ -1,0 +1,9 @@
+selain->palvelin:  HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+note over selain:
+sisältää JSON-muodossa olevan uuden muistiinpanon
+end note
+
+palvelin-->selain: Status Code: 201
+note over palvelin:
+pyyntö luotu
+end note
