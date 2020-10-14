@@ -1,4 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+
+
 
 const ListofNames = ({ persons }) => {
     return (
@@ -32,12 +35,19 @@ const PersonForm = ( {namevalue, handlenamechange, numbervalue, handlenumberchan
 }
 
 const App = (props) => {
-    const [persons, setPersons] = useState([
-        { name: 'Arto Hellas',
-          number: '+358 44 123432' }
-    ]) 
+    const [persons, setPersons] = useState([]) 
     const [newName, setNewName ] = useState('')
     const [newNumber, setNewNumber ] = useState('')
+
+    useEffect(() => {
+        axios
+          .get('http://localhost:3001/persons')
+          .then(response => {
+            setPersons(response.data)
+          })
+      }, []
+    )
+
 
     const addName = (event) => {
         event.preventDefault()
