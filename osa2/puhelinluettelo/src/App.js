@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-
+import serverService from './serverCom'
 
 
 const ListofNames = ({ persons }) => {
@@ -12,10 +11,13 @@ const ListofNames = ({ persons }) => {
         </div>
     )
 }
-
 const OneName = ({ person }) => {
     return (
-        <li>{person.name} {person.number}</li>
+        <li>{person.name} {person.number}
+            <button onClick={() => removePerson(person.id)}>
+                delete
+            </button>
+        </li>
     )
 }
 
@@ -34,19 +36,29 @@ const PersonForm = ( {namevalue, handlenamechange, numbervalue, handlenumberchan
     )
 }
 
-const App = (props) => {
+const removePerson = ( event ) => {
+    if(window.confirm(`Do you really want to delete ?`)){
+        //remove the person from database
+        serverService
+            .removePerson(event)       
+    }
+    window.location.reload()
+}
+
+const App = () => {
     const [persons, setPersons] = useState([]) 
     const [newName, setNewName ] = useState('')
     const [newNumber, setNewNumber ] = useState('')
 
     useEffect(() => {
-        axios
-          .get('http://localhost:3001/persons')
-          .then(response => {
-            setPersons(response.data)
+        serverService
+          .getAll()
+          .then(initialPerson => {
+            setPersons(initialPerson)
           })
       }, []
     )
+
 
 
     const addName = (event) => {
@@ -55,18 +67,15 @@ const App = (props) => {
             name: newName,
             number: newNumber
         }
-        for(var i=0; i < persons.length; i++){
-            if(newName !== persons[i].name){
-                setPersons(persons.concat(nameObject))
+   
+
+        serverService
+            .create(nameObject)
+            .then(returnedPerson => {
+                setPersons(persons.concat(returnedPerson))
                 setNewName('')
                 setNewNumber('')
-            }
-            else{
-                window.alert(`${newName} is already added to phonebook`)
-                setPersons(persons.concat())
-                i=persons.length
-            }
-        }
+            })
     }
 
     const handleNameChange = (event) => {
