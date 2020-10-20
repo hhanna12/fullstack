@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import serverService from './serverCom'
+import Notification from './Notification'
 
 
 const ListofNames = ({ persons }) => {
@@ -40,7 +41,7 @@ const removePerson = ( event ) => {
     if(window.confirm(`Do you really want to delete ?`)){
         //remove the person from database
         serverService
-            .removePerson(event)       
+            .removePerson(event)    
     }
     window.location.reload()
 }
@@ -49,6 +50,8 @@ const App = () => {
     const [persons, setPersons] = useState([]) 
     const [newName, setNewName ] = useState('')
     const [newNumber, setNewNumber ] = useState('')
+    const [posMessage, setPosMessage] = useState(null)
+
 
     useEffect(() => {
         serverService
@@ -59,16 +62,12 @@ const App = () => {
       }, []
     )
 
-
-
     const addName = (event) => {
         event.preventDefault()
         const nameObject = {
             name: newName,
             number: newNumber
         }
-   
-
         serverService
             .create(nameObject)
             .then(returnedPerson => {
@@ -76,6 +75,12 @@ const App = () => {
                 setNewName('')
                 setNewNumber('')
             })
+        setPosMessage(
+            `Added ${nameObject.name}`
+        )
+        setTimeout(() => {
+            setPosMessage(null)
+        }, 5000)    
     }
 
     const handleNameChange = (event) => {
@@ -88,6 +93,7 @@ const App = () => {
     return (
         <div>
             <h2>Phonebook</h2>
+            <Notification message={posMessage} />
             <h3>Add a new</h3>
             <PersonForm 
                 namevalue = {newName} 
