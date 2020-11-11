@@ -12,7 +12,7 @@ const Header = (props) => {
 
 
 const Content = (props) => {
-//Content osista ja niiden tehtävämääristä
+//Content huolehtii osista ja niiden tehtävämääristä
   return (
     <>
       <Part course={props.course} />
@@ -34,7 +34,7 @@ const Part = (props) => {
 
 
 const Total = (props) => {
-//Total tehtävien yhteismäärästä
+//tehtävien yhteismäärä
   return (
     <>
       <p>Number of exercises {props.course.parts[0].exercises + props.course.parts[1].exercises + props.course.parts[2].exercises}</p>
