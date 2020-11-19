@@ -46,6 +46,22 @@ const App = () => {
           id: 2
         }
       ]
+    }, 
+    {
+      name: 'Kolmas',
+      id: 2,
+      parts: [
+        {
+          name: 'kolmas eka',
+          exercises: 3,
+          id: 1
+        },
+        {
+          name: 'Kolmas toka',
+          exercises: 7,
+          id: 2
+        }
+      ]
     }
   ]
   
